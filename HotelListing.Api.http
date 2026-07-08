@@ -1,0 +1,39 @@
+@HostAddress = http://localhost:5272
+
+GET {{HostAddress}}/api/hotels
+Accept: application/json
+
+###
+
+POST {{HostAddress}}/api/hotels
+Content-Type: application/json
+
+{
+  "name": "Hotel California",
+  "address": "42 Sunset Boulevard",
+  "city": "Los Angeles",
+  "country": "USA",
+  "rating": 5
+}
+
+###
+
+@hotelId = 2
+
+DELETE {{HostAddress}}/api/hotels/{{hotelId}}
+
+###
+GET {{HostAddress}}/api/hotels/{{hotelId}}
+Accept: application/json
+
+###
+PUT {{HostAddress}}/api/hotels/{{hotelId}}
+Content-Type: application/json
+
+{
+  "name": "Updated Hotel Name",
+  "address": "Updated Address",
+  "city": "Updated City",
+  "country": "Updated Country",
+  "rating": 4
+}
