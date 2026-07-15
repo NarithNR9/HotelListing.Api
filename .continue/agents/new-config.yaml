@@ -1,36 +1,18 @@
-# This is an example configuration file
-# To learn more, see the full config.yaml reference: https://docs.continue.dev/reference
-
-name: Example Config
+name: DeepSeek Cloud Setup
 version: 1.0.0
 schema: v1
-
-# Define which models can be used
-# https://docs.continue.dev/customization/models
 models:
-  - name: my gpt-5
-    provider: openai
-    model: gpt-5
-    apiKey: YOUR_OPENAI_API_KEY_HERE
-  - name: qwen2.5-coder 7b
-    provider: ollama
-    model: qwen2.5-coder:7b
+  - name: DeepSeek Chat (Assistant)
+    provider: deepseek
+    model: deepseek-chat
+    apiKey: sk-62f403e71c7d4fcb9269fc94db6f0a3e
     roles:
-      - apply
+      - chat
+      - edit
+
+  - name: DeepSeek Autocomplete
+    provider: deepseek
+    model: deepseek-chat
+    apiKey: sk-62f403e71c7d4fcb9269fc94db6f0a3e
+    roles:
       - autocomplete
-      - chat
-      - edit
-  - name: Claude 4 Sonnet
-    provider: anthropic
-    model: claude-sonnet-4-20250514
-    apiKey: ${{ secrets.ANTHROPIC_API_KEY }}
-    roles:
-      - chat
-      - edit
-      - apply
-    defaultCompletionOptions:
-      contextLength: 200000
-      maxTokens: 64000
-    capabilities:
-      - tool_use
-      - image_input
