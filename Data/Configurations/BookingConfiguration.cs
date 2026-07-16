@@ -13,7 +13,7 @@ namespace HotelListing.Api.Data.Configurations
 
             builder.HasIndex(x => x.UserId);
             builder.HasIndex(x => x.HotelId);
-            builder.HasIndex(x => new { x.CheckInDate, x.CheckOutDate });
+            builder.HasIndex(x => new { x.CheckIn, x.CheckOut });
         }
     }
 }
