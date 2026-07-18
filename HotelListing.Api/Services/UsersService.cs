@@ -1,9 +1,11 @@
 using HotelListing.Api.Common.Constants;
+using HotelListing.Api.Common.Models.Config;
 using HotelListing.Api.Contracts;
 using HotelListing.Api.Data;
 using HotelListing.Api.DTOs.Auth;
 using HotelListing.Api.Results;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,7 +14,8 @@ using System.Text;
 
 namespace HotelListing.Api.Services;
 
-public class UsersService(UserManager<ApplicationUser> userManager, HotelListingDbContext hotelListingDbContext, IConfiguration configuration, IHttpContextAccessor httpContextAccessor) : IUsersService
+public class UsersService(UserManager<ApplicationUser> userManager, HotelListingDbContext hotelListingDbContext,
+    IOptions<JwtSettings> jwtOptions, IHttpContextAccessor httpContextAccessor) : IUsersService
 {
     public async Task<Result<RegisteredUserDto>> RegisterUserAsync(RegisterUserDto registerUserDto)
     {
@@ -81,11 +84,11 @@ public class UsersService(UserManager<ApplicationUser> userManager, HotelListing
     public string UserId => httpContextAccessor?
             .HttpContext?
             .User?
-            .FindFirst(JwtRegisteredClaimNames.Sub)?.Value 
+            .FindFirst(JwtRegisteredClaimNames.Sub)?.Value
         ?? httpContextAccessor?
             .HttpContext?
             .User?
-            .FindFirst(ClaimTypes.NameIdentifier)?.Value 
+            .FindFirst(ClaimTypes.NameIdentifier)?.Value
         ?? string.Empty;
 
     private async Task<string> GenerateToken(ApplicationUser user)
@@ -106,15 +109,15 @@ public class UsersService(UserManager<ApplicationUser> userManager, HotelListing
         claims = claims.Union(roleClaims).ToList();
 
         // Set JWT Key credentials
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Key"] ?? string.Empty));
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Value.Key ?? string.Empty));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         // Create an encoded token
         var token = new JwtSecurityToken(
-            issuer: configuration["JwtSettings:Issuer"],
-            audience: configuration["JwtSettings:Audience"],
+            issuer: jwtOptions.Value.Issuer,
+            audience: jwtOptions.Value.Audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(Convert.ToInt32(configuration["JwtSettings:DurationInMinutes"])),
+            expires: DateTime.UtcNow.AddMinutes(Convert.ToInt32(jwtOptions.Value.DurationInMinutes)),
             signingCredentials: credentials
             );
 
