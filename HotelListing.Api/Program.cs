@@ -1,5 +1,5 @@
 using HotelListing.Api.Contracts;
-using HotelListing.Api.Data;
+using HotelListing.Api.Domain;
 using HotelListing.Api.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;

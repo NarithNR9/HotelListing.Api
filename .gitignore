@@ -79,3 +79,5 @@ PublishScripts/
 *.pubxml.user
 *.cache
 node_modules/
+
+.continue
