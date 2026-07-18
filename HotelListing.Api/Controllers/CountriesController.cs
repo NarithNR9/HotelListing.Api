@@ -1,5 +1,5 @@
-using HotelListing.Api.Contracts;
-using HotelListing.Api.DTOs.Country;
+using HotelListing.Api.Application.Contracts;
+using HotelListing.Api.Application.DTOs.Country;
 using HotelListing.Api.Common.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

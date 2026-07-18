@@ -1,9 +1,9 @@
-using HotelListing.Api.Contracts;
+using HotelListing.Api.Application.Contracts;
 using HotelListing.Api.Domain;
-using HotelListing.Api.Services;
+using HotelListing.Api.Application.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
-using HotelListing.Api.MappingProfiles;
+using HotelListing.Api.Application.MappingProfiles;
 using Microsoft.AspNetCore.Authentication;
 using HotelListing.Api.Handlers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
