@@ -1,6 +1,6 @@
-namespace HotelListing.Api.Constants;
+﻿namespace HotelListing.Api.Common.Constants;
 
-public static class AuthenticationDefaults
+public class AuthenticationDefaults
 {
     public const string BasicScheme = "Basic";
     public const string ApiKeyScheme = "ApiKey";

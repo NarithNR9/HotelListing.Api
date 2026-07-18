@@ -1,3 +1,4 @@
+using HotelListing.Api.Common.Constants;
 using HotelListing.Api.Contracts;
 using HotelListing.Api.Data;
 using HotelListing.Api.DTOs.Auth;
@@ -13,7 +14,7 @@ namespace HotelListing.Api.Services;
 
 public class UsersService(UserManager<ApplicationUser> userManager, HotelListingDbContext hotelListingDbContext, IConfiguration configuration, IHttpContextAccessor httpContextAccessor) : IUsersService
 {
-    public async Task<Result<RegisteredUserDto>> RegisterAsync(RegisterUserDto registerUserDto)
+    public async Task<Result<RegisteredUserDto>> RegisterUserAsync(RegisterUserDto registerUserDto)
     {
         var user = new ApplicationUser
         {
@@ -57,7 +58,7 @@ public class UsersService(UserManager<ApplicationUser> userManager, HotelListing
         return Result<RegisteredUserDto>.Success(registeredUser);
     }
 
-    public async Task<Result<string>> LoginAsync(LoginUserDto dto)
+    public async Task<Result<string>> LoginUserAsync(LoginUserDto dto)
     {
         var user = await userManager.FindByEmailAsync(dto.Email);
         if (user is null)
