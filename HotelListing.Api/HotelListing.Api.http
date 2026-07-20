@@ -1,484 +1,136 @@
-@HostAddress = http://localhost:5272
+@HotelListing.Api_HostAddress = https://localhost:7124
 @json = application/json
-@apiKey = dXNlcjFAZXhhbXBsZS5jb206UGFzc3dvcmQxMjMh
+@apiKey=dXNlcjFAbG9jYWxob3N0LmNvbTpQQHNzrbd29yZDE=
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmODMzYjRhYS05YThlLTRlZWQtYjVhZS0wNmM4ZDYwNTIwNTMiLCJlbWFpbCI6InVzZXJAbG9jYWxob3N0LmNvbSIsImp0aSI6ImY5OWU5YmJlLWUxZTgtNDgyNi1iNmZkLWQ4MWVlOWRmNjViMiIsIm5hbWUiOiIsICIsImV4cCI6MTc1OTEyODM4OCwiaXNzIjoiSG90ZWxMaXN0aW5nQVBJIiwiYXVkIjoiSG90ZWxMaXN0aW5nQVBJQ2xpZW50In0.nLSQ3jUqBhXcY4KN7HmfqGZ3edFKQV3i7Fsx-jk5d_w
+@id=3
+@countryId=90
+@pageSize=5
 
-###############################################################################
-# AUTH — Register & Login (no prior auth needed)
-###############################################################################
+GET {{HotelListing.Api_HostAddress}}/api/countries?countryName=United&pageNumber=1&pageSize=20
+Authorization: Bearer {{token}}
+###
 
-### Register a new user
-POST {{HostAddress}}/api/auth/register
+# Get Country Hotels - Large Page Size
+GET {{HotelListing.Api_HostAddress}}/api/countries/{{countryId}}/hotels?pageNumber=1&pageSize=20
+Authorization: Bearer {{token}}
+###
+
+POST {{HotelListing.Api_HostAddress}}/api/countries
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjIzYjQ3YS0xOWRjLTRjOWEtOGEwMC05OTk4ODFiNzQ0MWUiLCJlbWFpbCI6ImFkbWluMUBsb2NhbGhvc3QuY29tIiwianRpIjoiZDFkMDk1N2ItZTM0Zi00Y2VlLWJjODMtMWZiMzk4NDlmYzY3IiwibmFtZSI6Ikxhc3QsIEZpcnN0IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW5pc3RyYXRvciIsImV4cCI6MTc1NjUyNTA2NSwiaXNzIjoiSG90ZWxMaXN0aW5nQVBJIiwiYXVkIjoiSG90ZWxMaXN0aW5nQVBJQ2xpZW50In0.t2tATBbdWAdXPQKTR0QhOX76PZc4Narm_XIBWx8-yKU
 Content-Type: {{json}}
 
 {
-  "firstName": "John",
-  "lastName": "Doe",
-  "email": "john.doe@example.com",
-  "password": "Password123!"
+  "name": "Test Admin Country",
+  "shortName": "TAC"
 }
 
-### Register a Hotel Admin (associated with hotel id 1)
-POST {{HostAddress}}/api/auth/register
-Content-Type: {{json}}
+###
 
+DELETE {{HotelListing.Api_HostAddress}}/api/countries/{{id}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjIzYjQ3YS0xOWRjLTRjOWEtOGEwMC05OTk4ODFiNzQ0MWUiLCJlbWFpbCI6ImFkbWluMUBsb2NhbGhvc3QuY29tIiwianRpIjoiZDFkMDk1N2ItZTM0Zi00Y2VlLWJjODMtMWZiMzk4NDlmYzY3IiwibmFtZSI6Ikxhc3QsIEZpcnN0IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW5pc3RyYXRvciIsImV4cCI6MTc1NjUyNTA2NSwiaXNzIjoiSG90ZWxMaXN0aW5nQVBJIiwiYXVkIjoiSG90ZWxMaXN0aW5nQVBJQ2xpZW50In0.t2tATBbdWAdXPQKTR0QhOX76PZc4Narm_XIBWx8-yKU
+###
+
+GET {{HotelListing.Api_HostAddress}}/api/countries/{{id}}
+
+###
+
+PUT {{HotelListing.Api_HostAddress}}/api/countries/{{id}}
+Content-Type: {{json}}
 {
-  "firstName": "Hotel",
-  "lastName": "Admin",
-  "email": "hoteladmin@example.com",
-  "password": "Password123!",
-  "role": "Hotel Admin",
-  "associatedHotelId": 1
+  "countryId": 2,
+  "name": "Jamaica",
+  "shortName": "JM"
+}
+###
+
+GET {{HotelListing.Api_HostAddress}}/api/hotels
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjIzYjQ3YS0xOWRjLTRjOWEtOGEwMC05OTk4ODFiNzQ0MWUiLCJlbWFpbCI6ImFkbWluMUBsb2NhbGhvc3QuY29tIiwianRpIjoiMjEzMjdmZDktYjU3Yi00MTg4LWE3ZWEtYThkMzgwOWE5NmIyIiwibmFtZSI6Ikxhc3QsIEZpcnN0IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW5pc3RyYXRvciIsImV4cCI6MTc1NzY0MzY5NiwiaXNzIjoiSG90ZWxMaXN0aW5nQVBJIiwiYXVkIjoiSG90ZWxMaXN0aW5nQVBJQ2xpZW50In0.uZLCkHkWXlKoJy4KpDKeCycGLsaJ8lvSxu0lM-yN508
+###
+
+POST {{HotelListing.Api_HostAddress}}/api/hotels
+Content-Type: {{json}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjIzYjQ3YS0xOWRjLTRjOWEtOGEwMC05OTk4ODFiNzQ0MWUiLCJlbWFpbCI6ImFkbWluMUBsb2NhbGhvc3QuY29tIiwianRpIjoiMjEzMjdmZDktYjU3Yi00MTg4LWE3ZWEtYThkMzgwOWE5NmIyIiwibmFtZSI6Ikxhc3QsIEZpcnN0IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW5pc3RyYXRvciIsImV4cCI6MTc1NzY0MzY5NiwiaXNzIjoiSG90ZWxMaXN0aW5nQVBJIiwiYXVkIjoiSG90ZWxMaXN0aW5nQVBJQ2xpZW50In0.uZLCkHkWXlKoJy4KpDKeCycGLsaJ8lvSxu0lM-yN508
+{
+  "Name": "Jewels Runaway Bay",
+  "Address": "Ocho Rios, Jamaica",
+  "Rating": 5,
+  "CountryId": 3
 }
 
-### Register a System Admin
-POST {{HostAddress}}/api/auth/register
+###
+@id=3
+DELETE {{HotelListing.Api_HostAddress}}/api/hotels/{{id}}
+
+###
+
+GET {{HotelListing.Api_HostAddress}}/api/hotels/{{id}}
+
+###
+
+PUT {{HotelListing.Api_HostAddress}}/api/hotels/{{id}}
 Content-Type: {{json}}
+{
+  "Id": 3,
+  "Name": "Ocean Coral",
+  "Address": "Trelawny, Jamaica",
+  "Rating": 4.5,
+  "CountryId": 100
+}
+
+###
+POST {{HotelListing.Api_HostAddress}}/api/auth/register
+Content-Type: {{json}}
+{
+  "email": "user1@localhost.com",
+  "password": "P@ssword1",
+  "firstName":"First",
+  "lastName": "Last"
+}
+
+###
+POST {{HotelListing.Api_HostAddress}}/api/auth/login
+Content-Type: application/json
 
 {
-  "firstName": "System",
-  "lastName": "Admin",
-  "email": "admin@example.com",
-  "password": "Password123!",
+  "email": "admin1@localhost.com",
+  "password": "P@ssword1"
+}
+
+###
+POST {{HotelListing.Api_HostAddress}}/api/defaultauth/login
+Content-Type: application/json
+
+{
+  "email": "user@localhost.com",
+  "password": "P@ssword1"
+}
+
+###
+
+POST {{HotelListing.Api_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "admin1@localhost.com",
+  "password": "P@ssword1",
+  "firstName":"First",
+  "lastName": "Last",
   "role": "Administrator"
 }
 
-### Login — copy the returned token into @adminToken below
-POST {{HostAddress}}/api/auth/login
-Content-Type: {{json}}
-
-{
-  "email": "admin@example.com",
-  "password": "Password123!"
-}
-
-### Login as regular user
-POST {{HostAddress}}/api/auth/login
-Content-Type: {{json}}
-
-{
-  "email": "john.doe@example.com",
-  "password": "Password123!"
-}
-
-### Login as hotel admin
-POST {{HostAddress}}/api/auth/login
-Content-Type: {{json}}
-
-{
-  "email": "hoteladmin@example.com",
-  "password": "Password123!"
-}
-
-###############################################################################
-# TOKENS — paste JWT here after login
-###############################################################################
-@adminToken = eyJ...
-@userToken = eyJ...
-@hotelAdminToken = eyJ...
-
-@hotelId = 1
-@countryId = 1
-@bookingId = 1
-
-###############################################################################
-# COUNTRIES — JWT required (all); POST/PUT/DELETE = Administrator only
-###############################################################################
-
-### GET all countries
-GET {{HostAddress}}/api/countries
-Accept: {{json}}
-Authorization: Bearer {{adminToken}}
-
 ###
 
-### GET country by id
-GET {{HostAddress}}/api/countries/{{countryId}}
-Accept: {{json}}
-Authorization: Bearer {{adminToken}}
-
-###
-
-### POST create country (Administrator only)
-POST {{HostAddress}}/api/countries
-Content-Type: {{json}}
-Authorization: Bearer {{adminToken}}
-
-{
-  "name": "Australia",
-  "shortName": "AUS"
-}
-
-###
-
-### PUT update country (Administrator only)
-PUT {{HostAddress}}/api/countries/{{countryId}}
-Content-Type: {{json}}
-Authorization: Bearer {{adminToken}}
-
-{
-  "id": {{countryId}},
-  "name": "Australia (Updated)",
-  "shortName": "AU"
-}
-
-###
-
-### DELETE country (Administrator only)
-DELETE {{HostAddress}}/api/countries/{{countryId}}
-Authorization: Bearer {{adminToken}}
-
-###############################################################################
-# HOTELS — JWT required (all); POST/PUT/DELETE = Administrator only
-###############################################################################
-
-### GET all hotels
-GET {{HostAddress}}/api/hotels
-Accept: {{json}}
-Authorization: Bearer {{adminToken}}
-
-###
-
-### GET hotel by id
-GET {{HostAddress}}/api/hotels/{{hotelId}}
-Accept: {{json}}
-Authorization: Bearer {{adminToken}}
-
-###
-
-### POST create hotel (Administrator only)
-POST {{HostAddress}}/api/hotels
-Content-Type: {{json}}
-Authorization: Bearer {{adminToken}}
-
-{
-  "name": "Grand Plaza",
-  "address": "100 Main Street",
-  "rating": 4.5,
-  "countryId": 1
-}
-
-###
-
-### PUT update hotel (Administrator only)
-PUT {{HostAddress}}/api/hotels/{{hotelId}}
-Content-Type: {{json}}
-Authorization: Bearer {{adminToken}}
-
-{
-  "id": {{hotelId}},
-  "name": "Grand Plaza (Renovated)",
-  "address": "100 Main Street",
-  "rating": 5,
-  "countryId": 1
-}
-
-###
-
-### DELETE hotel (Administrator only)
-DELETE {{HostAddress}}/api/hotels/{{hotelId}}
-Authorization: Bearer {{adminToken}}
-
-###############################################################################
-# BOOKINGS — JWT required
-# Routes are nested under /api/hotels/{hotelId}/bookings
-###############################################################################
-
-### GET user's own bookings for a hotel
-GET {{HostAddress}}/api/hotels/{{hotelId}}/bookings
-Accept: {{json}}
-Authorization: Bearer {{userToken}}
-
-###
-
-### POST create a booking
-POST {{HostAddress}}/api/hotels/{{hotelId}}/bookings
-Content-Type: {{json}}
-Authorization: Bearer {{userToken}}
-
-{
-  "hotelId": {{hotelId}},
-  "checkIn": "2026-08-01",
-  "checkOut": "2026-08-05",
-  "guests": 2
-}
-
-###
-
-### PUT update a booking
-PUT {{HostAddress}}/api/hotels/{{hotelId}}/bookings/{{bookingId}}
-Content-Type: {{json}}
-Authorization: Bearer {{userToken}}
-
-{
-  "checkIn": "2026-08-10",
-  "checkOut": "2026-08-15",
-  "guests": 3
-}
-
-###
-
-### PUT cancel own booking
-PUT {{HostAddress}}/api/hotels/{{hotelId}}/bookings/{{bookingId}}/cancel
-Authorization: Bearer {{userToken}}
-
-###
-
-### GET all bookings for hotel (HotelAdmin or SystemAdmin only)
-GET {{HostAddress}}/api/hotels/{{hotelId}}/bookings/admin
-Accept: {{json}}
-Authorization: Bearer {{adminToken}}
-
-###
-
-### PUT admin cancel booking (HotelAdmin or SystemAdmin only)
-PUT {{HostAddress}}/api/hotels/{{hotelId}}/bookings/{{bookingId}}/admin/cancel
-Authorization: Bearer {{adminToken}}
-
-###
-
-### PUT admin confirm booking (HotelAdmin or SystemAdmin only)
-PUT {{HostAddress}}/api/hotels/{{hotelId}}/bookings/{{bookingId}}/admin/confirm
-Authorization: Bearer {{adminToken}}
-
-###############################################################################
-# API-KEY AUTH — requires X-Api-Key header
-###############################################################################
-
-### GET all (api key auth)
-GET {{HostAddress}}/api/apikey
-Accept: {{json}}
+GET {{HotelListing.Api_HostAddress}}/api/apikey
 X-Api-Key: {{apiKey}}
 
 ###
 
-### GET by id (api key auth)
-GET {{HostAddress}}/api/apikey/1
-Accept: {{json}}
-X-Api-Key: {{apiKey}}
+GET {{HotelListing.Api_HostAddress}}/api/basicauth
+Authorization: Basic dXNlcjFAbG9jYWxob3N0LmNvbTpQQHNzd29yZDE=
 
 ###
 
-### POST create (api key auth)
-POST {{HostAddress}}/api/apikey
-Content-Type: {{json}}
-X-Api-Key: {{apiKey}}
 
-"test-value"
-
+PUT {{HotelListing.Api_HostAddress}}/api/hotels/1/bookings/1/admin/cancel
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjIzYjQ3YS0xOWRjLTRjOWEtOGEwMC05OTk4ODFiNzQ0MWUiLCJlbWFpbCI6ImFkbWluMUBsb2NhbGhvc3QuY29tIiwianRpIjoiZTQ1NzJjYjUtZjM1Zi00MTkyLTk3YTAtM2Y5MTIzYzg0ODI3IiwibmFtZSI6Ikxhc3QsIEZpcnN0IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW5pc3RyYXRvciIsImV4cCI6MTc1NzM0ODk2NCwiaXNzIjoiSG90ZWxMaXN0aW5nQVBJIiwiYXVkIjoiSG90ZWxMaXN0aW5nQVBJQ2xpZW50In0.k7fJ1cxplGHlvTou9GBct8YcfWLCXQs0qEMMsP0fR1s
 ###
-
-### PUT update (api key auth)
-PUT {{HostAddress}}/api/apikey/1
-Content-Type: {{json}}
-X-Api-Key: {{apiKey}}
-
-"updated-value"
-
-###
-
-### DELETE (api key auth)
-DELETE {{HostAddress}}/api/apikey/1
-X-Api-Key: {{apiKey}}
-
-###############################################################################
-# BASIC AUTH — requires Authorization: Basic <base64>
-###############################################################################
-@basicAuth = Basic dXNlcjpwYXNz
-
-### GET all (basic auth)
-GET {{HostAddress}}/api/basicauth
-Accept: {{json}}
-Authorization: {{basicAuth}}
-
-###
-
-### GET by id (basic auth)
-GET {{HostAddress}}/api/basicauth/1
-Accept: {{json}}
-Authorization: {{basicAuth}}
-
-###
-
-### POST create (basic auth)
-POST {{HostAddress}}/api/basicauth
-Content-Type: {{json}}
-Authorization: {{basicAuth}}
-
-"basic-value"
-
-###
-
-### PUT update (basic auth)
-PUT {{HostAddress}}/api/basicauth/1
-Content-Type: {{json}}
-Authorization: {{basicAuth}}
-
-"updated-basic-value"
-
-###
-
-### DELETE (basic auth)
-DELETE {{HostAddress}}/api/basicauth/1
-Authorization: {{basicAuth}}
-
-###############################################################################
-# NEGATIVE / EDGE CASES
-###############################################################################
-
-### GET non-existent hotel → 404
-GET {{HostAddress}}/api/hotels/9999
-Accept: {{json}}
-Authorization: Bearer {{adminToken}}
-
-###
-
-### POST hotel with invalid data → 400
-POST {{HostAddress}}/api/hotels
-Content-Type: {{json}}
-Authorization: Bearer {{adminToken}}
-
-{
-  "name": "",
-  "address": "",
-  "rating": 10,
-  "countryId": -1
-}
-
-###
-
-### PUT hotel with mismatched route/payload id → 400
-PUT {{HostAddress}}/api/hotels/{{hotelId}}
-Content-Type: {{json}}
-Authorization: Bearer {{adminToken}}
-
-{
-  "id": 999,
-  "name": "Mismatched",
-  "address": "Test",
-  "rating": 3,
-  "countryId": 1
-}
-
-###
-
-### DELETE non-existent hotel → 404
-DELETE {{HostAddress}}/api/hotels/9999
-Authorization: Bearer {{adminToken}}
-
-###
-
-### POST booking with overlapping dates → 400 / conflict
-POST {{HostAddress}}/api/hotels/{{hotelId}}/bookings
-Content-Type: {{json}}
-Authorization: Bearer {{userToken}}
-
-{
-  "hotelId": {{hotelId}},
-  "checkIn": "2026-08-02",
-  "checkOut": "2026-08-04",
-  "guests": 2
-}
-
-###
-
-### POST booking with check-out before check-in → 400
-POST {{HostAddress}}/api/hotels/{{hotelId}}/bookings
-Content-Type: {{json}}
-Authorization: Bearer {{userToken}}
-
-{
-  "hotelId": {{hotelId}},
-  "checkIn": "2026-09-10",
-  "checkOut": "2026-09-05",
-  "guests": 1
-}
-
-###
-
-### POST booking with 0 guests → 400
-POST {{HostAddress}}/api/hotels/{{hotelId}}/bookings
-Content-Type: {{json}}
-Authorization: Bearer {{userToken}}
-
-{
-  "hotelId": {{hotelId}},
-  "checkIn": "2026-09-01",
-  "checkOut": "2026-09-05",
-  "guests": 0
-}
-
-###
-
-### Register with existing email → conflict
-POST {{HostAddress}}/api/auth/register
-Content-Type: {{json}}
-
-{
-  "firstName": "Duplicate",
-  "lastName": "User",
-  "email": "john.doe@example.com",
-  "password": "Password123!"
-}
-
-###
-
-### Register with weak password → 400
-POST {{HostAddress}}/api/auth/register
-Content-Type: {{json}}
-
-{
-  "firstName": "Weak",
-  "lastName": "Pass",
-  "email": "weak@example.com",
-  "password": "123"
-}
-
-###
-
-### Login with wrong password → 401
-POST {{HostAddress}}/api/auth/login
-Content-Type: {{json}}
-
-{
-  "email": "john.doe@example.com",
-  "password": "WrongPassword123!"
-}
-
-###
-
-### Access admin endpoint without admin role → 403
-POST {{HostAddress}}/api/hotels
-Content-Type: {{json}}
-Authorization: Bearer {{userToken}}
-
-{
-  "name": "Should Fail",
-  "address": "No Perm",
-  "rating": 3,
-  "countryId": 1
-}
-
-###
-
-### Access protected endpoint without token → 401
-GET {{HostAddress}}/api/hotels
-Accept: {{json}}
-
-###
-
-### Admin bookings endpoint without admin role → 403
-GET {{HostAddress}}/api/hotels/{{hotelId}}/bookings/admin
-Accept: {{json}}
-Authorization: Bearer {{userToken}}
-
-###
-
-### ApiKey endpoint without key → 401
-GET {{HostAddress}}/api/apikey
-Accept: {{json}}
-
-###
-
-### BasicAuth endpoint without credentials → 401
-GET {{HostAddress}}/api/basicauth
-Accept: {{json}}
