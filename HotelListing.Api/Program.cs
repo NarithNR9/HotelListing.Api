@@ -60,6 +60,7 @@ builder.Services.AddScoped<IApiKeyValidatorService, ApiKeyValidatorService>();
 builder.Services.AddAutoMapper(cfg => { }, Assembly.GetExecutingAssembly());
 
 builder.Services.AddControllers()
+    .AddNewtonsoftJson()
     .AddJsonOptions(options =>
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 //   more about configuring OpenAPI at https://aka.ms/aspnet/openapi

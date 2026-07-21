@@ -9,6 +9,7 @@ using HotelListing.Api.Common.Models.Filtering;
 using HotelListing.Api.Common.Models.Paging;
 using HotelListing.Api.Common.Results;
 using HotelListing.Api.Domain;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelListing.Api.Application.Services;
@@ -22,7 +23,7 @@ public class CountriesService(HotelListingDbContext context, IMapper mapper) : I
         if (!string.IsNullOrWhiteSpace(filters.Search))
         {
             var term = filters.Search.Trim();
-            query = query.Where(c => EF.Functions.Like(c.Name, $"%{term}%") 
+            query = query.Where(c => EF.Functions.Like(c.Name, $"%{term}%")
             || EF.Functions.Like(c.ShortName, $"%{term}%"));
         }
 
@@ -144,7 +145,7 @@ public class CountriesService(HotelListingDbContext context, IMapper mapper) : I
             .Where(q => q.CountryId == countryId)
             .Select(q => q.Name)
             .SingleAsync();
-            
+
         var hotelsQuery = context.Hotels
             .Where(h => h.CountryId == countryId)
             .AsQueryable();
@@ -174,5 +175,36 @@ public class CountriesService(HotelListingDbContext context, IMapper mapper) : I
         };
 
         return Result<GetCountryHotelsDto>.Success(result);
+    }
+
+    public async Task<Result> PatchCountryAsync(int id, JsonPatchDocument<UpdateCountryDto> patchDocument)
+    {
+        var country = await context.Countries.FindAsync(id);
+        if (country is null)
+        {
+            return Result.NotFound(new Error(ErrorCodes.NotFound, $"Country not found"));
+        }
+
+        var countryDto = mapper.Map<UpdateCountryDto>(country);
+        patchDocument.ApplyTo(countryDto);
+
+        if (countryDto.Id != id)
+        {
+            return Result.BadRequest(new Error(ErrorCodes.Validation, "Cannot modify the id field."));
+        }
+
+        var duplicateExists = await context.Countries
+            .AnyAsync(c => c.Name.ToLower().Trim() == countryDto.Name.ToLower().Trim()
+                && c.CountryId != id);
+        if (duplicateExists)
+        {
+            return Result.Failure(new Error(ErrorCodes.Conflict,
+                $"Country with the same name already exists"));
+        }
+
+        mapper.Map(countryDto, country);
+        await context.SaveChangesAsync();
+
+        return Result.Success();
     }
 }
