@@ -18,7 +18,25 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("HotelListingDbConnectionString");
-builder.Services.AddDbContext<HotelListingDbContext>(options => options.UseSqlServer(connectionString));
+
+builder.Services.AddDbContextPool<HotelListingDbContext>(options =>{
+    options.UseSqlServer(connectionString, sqlOptions =>
+    {
+        sqlOptions.CommandTimeout(30);
+        sqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 3,
+            maxRetryDelay: TimeSpan.FromSeconds(30),
+            errorNumbersToAdd: null);
+    });
+
+    if (builder.Environment.IsDevelopment())
+    {
+        options.EnableSensitiveDataLogging();
+        options.EnableDetailedErrors();
+    }
+    
+    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+}, poolSize: 128);
 builder.Services.AddIdentityApiEndpoints<ApplicationUser>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<HotelListingDbContext>();
